@@ -1,0 +1,266 @@
+{
+  "name": "EduBridge Assessment Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "edubridge/assess",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e5b8d227-2c96-419b-ab8d-2d4e7fcfb00f",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/api/assessment/start",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"userId\": \"{{ $json.body.userId }}\",\n  \"interests\": {{ JSON.stringify($json.body.interests) }},\n  \"skills\": {{ JSON.stringify($json.body.skills) }}\n}",
+        "options": {}
+      },
+      "id": "6d9f3f4e-28b9-4dc3-9c84-18c7e19195d4",
+      "name": "HTTP Request - Start",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [200, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.questions && $json.questions.length > 0 ? true : false }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "713bc499-1a42-4f3b-821b-dbfb7a41c2c3",
+      "name": "IF - Check Start Response",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [400, 0]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": false,
+        "values": {
+          "string": [
+            {
+              "name": "sessionId",
+              "value": "={{ $json.sessionId }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "questionCount",
+              "value": "={{ $json.questions.length }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc1e60f0-8c17-48f0-bbfb-371285223c6b",
+      "name": "Set - Extract Session",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [600, -100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3001/api/assessment/submit",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"userId\": \"{{ $('Webhook Trigger').item.json.body.userId }}\",\n  \"sessionId\": \"{{ $('Set - Extract Session').item.json.sessionId }}\",\n  \"answers\": []\n}",
+        "options": {}
+      },
+      "id": "ba9e1590-b9bb-4591-b924-d2e67dfed360",
+      "name": "HTTP Request - Submit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [800, -100]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.skillProfile ? true : false }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "a93322fb-6a05-4c07-ba71-615c4649f8cd",
+      "name": "IF - Check Submit Response",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1000, -100]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "boolean": [
+            {
+              "name": "success",
+              "value": true
+            }
+          ],
+          "string": [
+            {
+              "name": "overallLevel",
+              "value": "={{ $json.skillProfile.overallLevel }}"
+            },
+            {
+              "name": "topCareer",
+              "value": "={{ $json.recommendations[0].role }}"
+            },
+            {
+              "name": "levelDescription",
+              "value": "={{ $json.scoreDetails.level_description }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "compatibilityPct",
+              "value": "={{ $json.recommendations[0].compatibility_score }}"
+            },
+            {
+              "name": "skillGapCount",
+              "value": "={{ $json.recommendations[0].skill_gap.length }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1fcf81f-7e8d-4f1f-bfbd-b6edbcbd6f6f",
+      "name": "Set - Format Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [1200, -200]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "84d5f4cb-206e-4df7-8b64-8ab3cf5f83bb",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1400, -200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"error\": \"Assessment pipeline failed\"\n}",
+        "options": {}
+      },
+      "id": "e7b0c7be-0e5a-4e4b-9e42-7a42531e2170",
+      "name": "Error Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [800, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Start": {
+      "main": [
+        [
+          {
+            "node": "IF - Check Start Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Check Start Response": {
+      "main": [
+        [
+          {
+            "node": "Set - Extract Session",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Extract Session": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Submit": {
+      "main": [
+        [
+          {
+            "node": "IF - Check Submit Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Check Submit Response": {
+      "main": [
+        [
+          {
+            "node": "Set - Format Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Format Success": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

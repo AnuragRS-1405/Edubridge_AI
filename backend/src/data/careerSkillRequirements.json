@@ -1,0 +1,80 @@
+[
+  {
+    "domain": "data",
+    "role": "Data Analyst",
+    "requiredSkills": {
+      "python": 60,
+      "sql": 70,
+      "statistics": 55,
+      "excel": 55,
+      "data visualization": 60
+    }
+  },
+  {
+    "domain": "ai_ml",
+    "role": "Machine Learning Engineer",
+    "requiredSkills": {
+      "python": 80,
+      "machine learning": 75,
+      "statistics": 70,
+      "sql": 60,
+      "ml frameworks": 70
+    }
+  },
+  {
+    "domain": "web_development",
+    "role": "Frontend Developer",
+    "requiredSkills": {
+      "javascript": 75,
+      "typescript": 65,
+      "react": 75,
+      "html css": 70,
+      "accessibility": 55
+    }
+  },
+  {
+    "domain": "web_development",
+    "role": "Full Stack Developer",
+    "requiredSkills": {
+      "javascript": 70,
+      "typescript": 65,
+      "react": 70,
+      "node.js": 70,
+      "sql": 60,
+      "api design": 60
+    }
+  },
+  {
+    "domain": "backend",
+    "role": "Backend Developer",
+    "requiredSkills": {
+      "node.js": 70,
+      "python": 65,
+      "api design": 70,
+      "sql": 65,
+      "databases": 65
+    }
+  },
+  {
+    "domain": "cloud_devops",
+    "role": "DevOps Engineer",
+    "requiredSkills": {
+      "linux": 70,
+      "docker": 70,
+      "cloud": 75,
+      "ci cd": 65,
+      "monitoring": 55
+    }
+  },
+  {
+    "domain": "data",
+    "role": "Data Engineer",
+    "requiredSkills": {
+      "python": 70,
+      "sql": 80,
+      "cloud": 65,
+      "etl": 70,
+      "data modeling": 65
+    }
+  }
+]

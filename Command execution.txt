@@ -1,0 +1,19 @@
+POWERSHELL A:
+
+cd "C:\Users\Anurag Rajendra\OneDrive\Pictures\VS CODE\EduBridge-AI-FR2\ai-service"
+.\.venv\Scripts\python.exe -m uvicorn src.main:app --reload --port 8000
+
+POWERSHELL B:
+
+cd "C:\Users\Anurag Rajendra\OneDrive\Pictures\VS CODE\EduBridge-AI-FR2\backend"
+$nodeDir = "..\.tools\node-v22.21.1-win-x64"
+$env:Path = (Resolve-Path $nodeDir).Path + ";" + $env:Path
+& "$nodeDir\npm.cmd" run dev
+
+POWERSHELL C:
+
+cd "C:\Users\Anurag Rajendra\OneDrive\Pictures\VS CODE\EduBridge-AI-FR2\frontend"
+$nodeDir = "..\.tools\node-v22.21.1-win-x64"
+$env:Path = (Resolve-Path $nodeDir).Path + ";" + $env:Path
+& "$nodeDir\npm.cmd" run dev
+

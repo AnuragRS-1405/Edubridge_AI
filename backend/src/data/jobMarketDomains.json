@@ -1,0 +1,32 @@
+[
+  {
+    "domain": "web_development",
+    "roles": ["Frontend Developer", "Full Stack Developer", "Web Developer"],
+    "trendingSkills": ["React", "TypeScript", "Next.js", "API Design", "Accessibility"],
+    "marketDemand": 82
+  },
+  {
+    "domain": "backend",
+    "roles": ["Backend Developer", "Full Stack Developer"],
+    "trendingSkills": ["Node.js", "API Design", "PostgreSQL", "System Design", "Cloud"],
+    "marketDemand": 80
+  },
+  {
+    "domain": "data",
+    "roles": ["Data Analyst", "Data Engineer", "Business Analyst"],
+    "trendingSkills": ["SQL", "Python", "Data Visualization", "ETL", "Cloud"],
+    "marketDemand": 84
+  },
+  {
+    "domain": "ai_ml",
+    "roles": ["Machine Learning Engineer", "AI Engineer"],
+    "trendingSkills": ["Python", "Machine Learning", "MLOps", "Vector Databases", "LLM Integration"],
+    "marketDemand": 88
+  },
+  {
+    "domain": "cloud_devops",
+    "roles": ["DevOps Engineer", "Cloud Engineer"],
+    "trendingSkills": ["Docker", "Kubernetes", "Cloud", "CI CD", "Monitoring"],
+    "marketDemand": 86
+  }
+]

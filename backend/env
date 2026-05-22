@@ -1,0 +1,5 @@
+PORT=3001
+MONGODB_URI=mongodb+srv://edubridgeaiindia_db_user:EduBridgeAIIndia_2026@edubridge-ai-cluster.mtsqwq3.mongodb.net/?appName=EduBridge-AI-cluster
+FASTAPI_BASE_URL=http://localhost:8000
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:3b
